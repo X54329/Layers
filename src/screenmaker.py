@@ -19,7 +19,7 @@ print ('Screen set')
 # Set positions of graphics
 background_position=[0,0]
 print ('Loading the loading screen')
-loading_image = pygame.image.load("../Photos/SubZeroTurtleGame/Load.png").convert()
+loading_image = pygame.image.load("../res/img/img.png").convert()
 print ('Loaded')
 
  
@@ -46,9 +46,7 @@ pygame.display.set_caption('background images')
  
 # Load and set up graphics.
 print ('Loading stuff')
-animation_image = pygame.image.load("../Photos/SubZeroTurtleGame/TurtleGoingToAntarcticaAnimationPlaceholder.png").convert()
-background_image = pygame.image.load("../Photos/SubZeroTurtleGame/AntarcticaPlaceholder.png").convert()
-player_image = pygame.image.load("../Photos/SubZeroTurtleGame/TurtlePlaceholder.png").convert()
+#player_image = pygame.image.load("../res/img").convert()
 player_image.set_colorkey(white)
 print ('Loaded')
 
