@@ -22,11 +22,12 @@ class Pixel(object):
                 self.pixel_array = pixel_array
             except ValueError:
                 continue
-        left_neighbor = self.pixel_array.pixels[pixel_index-1]
-        right_neighbor = self.pixel_array.pixels[pixel_index+1]
+        left_neighbor = self.pixel_array[pixel_index-1]
+        right_neighbor = self.pixel_array[pixel_index+1]
         prev_row = self.parent_maze.pixels[self.parent_maze.pixels.index(pixel_array)-1]
         next_row = self.parent_maze.pixels[self.parent_maze.pixels.index(pixel_array)+1]
         bottom_neighbor = next_row[pixel_index]
+        top_neighbor = prev_row[pixel_index]
         return [left_neighbor, right_neighbor, bottom_neighbor, top_neighbor]
     
 class Maze(object):
