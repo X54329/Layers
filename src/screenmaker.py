@@ -1,90 +1,76 @@
-#Chapter 12 from http://programarcadegames.com/index.php?chapter=bitmapped_graphics_and_sound&lang=en#section_12
-import pygame
-import time
- 
-# Define some colors
-white=[255,255,255]
-black=[0,0,0]
- 
-# Call this function so the Pygame library can initialize itself
-print ('Initializing pygame')
+# Pygame Cheat Sheet
+# This program should show you the basics of using the Pygame library.
+# by Al Sweigart http://inventwithpython.com
+
+# Download files from:
+#     http://inventwithpython.com/cat.png
+#     http://inventwithpython.com/bounce.wav
+
+import pygame, sys
+from pygame.locals import *
+
 pygame.init()
-print ('Initialized')
+fpsClock = pygame.time.Clock()
 
-# Create an 800x600 sized screen
-print ('Starting the screen')
-screen = pygame.display.set_mode([600, 389])
-print ('Screen set')
+windowSurfaceObj = pygame.display.set_mode((640, 480))
+pygame.display.set_caption('Pygame Cheat Sheet')
 
-# Set positions of graphics
-background_position=[0,0]
-print ('Loading the loading screen')
-loading_image = pygame.image.load("../res/img/img.png").convert()
-print ('Loaded')
+catSurfaceObj = pygame.image.load('../assets/cat.png')
+redColor = pygame.Color(255, 0, 0)
+greenColor = pygame.Color(0, 255, 0)
+blueColor = pygame.Color(0, 0, 255)
+whiteColor = pygame.Color(255, 255, 255)
+mousex, mousey = 0, 0
 
- 
-# Create a surface we can draw on
-background = pygame.Surface(screen.get_size())
-print ('blitting')
-screen.blit(loading_image, background_position)
-print ('blat')
-print ('updating')
-pygame.display.flip()
-print ('updated')
+fontObj = pygame.font.Font('freesansbold.ttf', 32)
+msg = 'Hello world!'
 
-# This sets the name of the window
-pygame.display.set_caption('background images')
+soundObj = pygame.mixer.Sound('../assets/bounce.wav')
 
- 
-### Fill the screen with a black background
-##background.fill(black)
- 
+while True:
+    windowSurfaceObj.fill(whiteColor)
 
-## (haven't done sounds yet)
-### Before the loop, load the sounds:
-##click_sound = pygame.mixer.Sound("click.wav")
- 
-# Load and set up graphics.
-print ('Loading stuff')
-#player_image = pygame.image.load("../res/img").convert()
-player_image.set_colorkey(white)
-print ('Loaded')
+    pygame.draw.polygon(windowSurfaceObj, greenColor, ((146, 0), (291, 106), (236, 277), (56, 277), (0, 106)))
+    pygame.draw.circle(windowSurfaceObj, blueColor, (300, 50), 20, 0)
+    pygame.draw.ellipse(windowSurfaceObj, redColor, (300, 250, 40, 80), 1)
+    pygame.draw.rect(windowSurfaceObj, redColor, (10, 10, 50, 100))
+    pygame.draw.line(windowSurfaceObj, blueColor, (60, 160), (120, 60), 4)
 
-clock = pygame.time.Clock()
+    pixArr = pygame.PixelArray(windowSurfaceObj)
+    for x in range(100, 200, 4):
+        for y in range(100, 200, 4):
+            pixArr[x][y] = redColor
+    del pixArr
 
-print ('Showing Animation')
 
-screen.blit(animation_image, background_position)
-pygame.display.flip()
-time.sleep(4)
+    windowSurfaceObj.blit(catSurfaceObj, (mousex, mousey))
 
-print ('Animation Shown')
+    msgSurfaceObj = fontObj.render(msg, False, blueColor)
+    msgRectobj = msgSurfaceObj.get_rect()
+    msgRectobj.topleft = (10, 20)
+    windowSurfaceObj.blit(msgSurfaceObj, msgRectobj)
 
- 
-done = False
-print ('Starting Main Loop')
-while done==False:
-    clock.tick(30)
-     
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done=True
-##        if event.type == pygame.MOUSEBUTTONDOWN:
-##            click_sound.play() 
-             
-    # Copy image to screen:
-    screen.blit(background_image, background_position)
- 
-    # Get the current mouse position. This returns the position
-    # as a list of two numbers.
-##    player_position = pygame.mouse.get_pos()
-##    x=player_position[0]
-##    y=player_position[1]
-     
-    # Copy image to screen:
-    screen.blit(player_image, [300,280])
-     
-    pygame.display.flip()
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == MOUSEMOTION:
+            mousex, mousey = event.pos
+        elif event.type == MOUSEBUTTONUP:
+            mousex, mousey = event.pos
+            soundObj.play()
+            if event.button in (1, 2, 3):
+                msg = 'left, middle, or right mouse click'
+            elif event.button in (4, 5):
+                msg = 'mouse scrolled up or down'
 
-print ('Exiting')
-pygame.quit ()
+        elif event.type == KEYDOWN:
+            if event.key in (K_LEFT, K_RIGHT, K_UP, K_DOWN):
+                msg = 'Arrow key pressed.'
+            if event.key == K_a:
+                msg = '"A" key pressed'
+            if event.key == K_ESCAPE:
+                pygame.event.post(pygame.event.Event(QUIT))
+
+    pygame.display.update()
+    fpsClock.tick(30) # pause to run the loop at 30 frames per second
