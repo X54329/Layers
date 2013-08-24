@@ -14,12 +14,14 @@ class Pixel(object):
         self.manual_discover = False
         self.dead_end = False
         self.discovered = False
+        self.white = False
     def get_row(self):
         return self.row
     def get_column(self):
         return self.column
     def set_discovered_true(self):
         self.discovered = True
+        self.white = True
 
     # OK, this recursively checks every pixel forver
     def discovered(self):
@@ -54,13 +56,12 @@ class Maze(object):
     def __init__(self):
         # for loop instead of multiplication to fix the pixel copying issue
         self.pixels = [[Pixel(self, i, j) for i in range(NUM_ROWS)] for j in range(NUM_COLUMNS)]
-        self.current_pixel = None
     def generate(self):
         row = random.randint(0,15)
         col = random.randint(0,15)
-        self.current_pixel = self.pixels[row][col]
-        self.current_pixel.set_discovered_true()
-        self.pixel_procedure(self.current_pixel)
+        first_pixel = self.pixels[row][col]
+        first_pixel.set_discovered_true()
+        self.pixel_procedure(first_pixel)
     def pixel_procedure(self, pixel):
         pixel.set_discovered_true()
         neighbors = pixel.get_neighbors()
@@ -69,12 +70,8 @@ class Maze(object):
             print "row " + str(neighbor.get_row())
             print "column " + str(neighbor.get_column())
             if neighbor.discovered == False:
-                self.pixel = neighbor
+                neighbor.white = True
                 self.pixel_procedure(neighbor)
             else:
                 continue
         pixel.dead_end = True
-
-m = Maze()
-m.generate()
-x = input("done")
