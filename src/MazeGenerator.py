@@ -5,6 +5,7 @@ import random
 class Pixel(object):
     def __init__(self, maze):
         self.parent_maze = maze
+        self.manual_discovered = False
     def set_discovered_true(self):
         self.manual_discover = True
     def discovered(self):
