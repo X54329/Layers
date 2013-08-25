@@ -15,6 +15,12 @@ class Pixel(object):
         self.dead_end = False
         self.discovered = False
         self.white = False
+	# Sides start at right-facing and go counter-clockwise
+	# side_open[0] ->
+	# side_open[1] /\
+	# side_open[2] <-
+	# side_open[3] \/
+	self.side_open = [False, False, False, False]
     def get_row(self):
         return self.row
     def get_column(self):
@@ -22,8 +28,10 @@ class Pixel(object):
     def set_discovered_true(self):
         self.discovered = True
         self.white = True
-
-    # OK, this recursively checks every pixel forver
+    def get_sides_open(self):
+	return self.side_open
+    def set_side_open(self, side):
+	self.side_open[side] = True
     def discovered(self):
         return discovered  
     def get_neighbors(self):
@@ -70,7 +78,22 @@ class Maze(object):
             print "row " + str(neighbor.get_row())
             print "column " + str(neighbor.get_column())
             if neighbor.discovered == False:
+
+		if neighbor.row < pixel.row:
+		    pixel.set_side_open(1)
+		    neighbor.set_side_open(3)
+		if neighbor.row > pixel.row:
+		    pixel.set_side_open(3)
+		    neighbor.set_side_open(1)
+		if neighbor.column < pixel.column:
+                    pixel.set_side_open(0)
+                    neighbor.set_side_open(2)
+                if neighbor.column > pixel.column:
+                    pixel.set_side_open(2)
+                    neighbor.set_side_open(0)
+			
                 neighbor.white = True
+#		x = input("next path")
                 self.pixel_procedure(neighbor)
             else:
                 continue
