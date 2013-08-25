@@ -1,12 +1,6 @@
-# Pygame Cheat Sheet
-# This program should show you the basics of using the Pygame library.
-# by Al Sweigart http://inventwithpython.com
+import pygame
+import sys
 
-# Download files from:
-#     http://inventwithpython.com/cat.png
-#     http://inventwithpython.com/bounce.wav
-
-import pygame, sys
 from pygame.locals import *
 from MazeGenerator import *
 
@@ -52,43 +46,38 @@ while True:
     for row in m.pixels:
         for pixel in row:
             sides = pixel.get_sides_open()
-	    if sides[0]:
-                if sides[1]:
-                    if sides[2]:
-                        if sides[3]:
-                	    windowSurfaceObj.blit(allImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-			else:
-			    windowSurfaceObj.blit(rightUpLeftImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		    elif sides[3]:
-			windowSurfaceObj.blit(rightUpDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		    else:
-			windowSurfaceObj.blit(rightUpImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		elif sides[2]:
-		    if sides[3]:
-			windowSurfaceObj.blit(rightLeftDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		    else:
-			windowSurfaceObj.blit(rightLeftImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		elif sides[3]:
-		    windowSurfaceObj.blit(rightDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		else:
-		    windowSurfaceObj.blit(rightImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-	    elif sides[1]:
-		if sides[2]:
-		    if sides[3]:
-			windowSurfaceObj.blit(upLeftDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		    else:
-			windowSurfaceObj.blit(upLeftImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		elif sides[3]:
-		    windowSurfaceObj.blit(upDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		else:
-		    windowSurfaceObj.blit(upImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-	    elif sides[2]:
-		if sides[3]:
-		    windowSurfaceObj.blit(leftDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-		else:
-		    windowSurfaceObj.blit(leftImg, (m.pixels.index(row)*20, row.index(pixel)*20))
-	    elif sides[3]:
-		windowSurfaceObj.blit(downImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            if sides[0] and sides[1] and sides[2] and sides[3]:
+                windowSurfaceObj.blit(allImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif sides[0] and sides[1] and sides[2] and not sides[3]:
+                windowSurfaceObj.blit(rightUpLeftImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif sides[0] and sides[1] and not sides[2] and sides[3]:
+                windowSurfaceObj.blit(rightUpDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif sides[0] and sides[1] and not sides[2] and not sides[3]:
+                windowSurfaceObj.blit(rightUpImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif sides[0] and not sides[1] and sides[2] and sides[3]:
+                windowSurfaceObj.blit(rightLeftDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif sides[0] and not sides[1] and sides[2] and not sides[3]:
+                windowSurfaceObj.blit(rightLeftImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif sides[0] and not sides[1] and not sides[2] and sides[3]:
+                windowSurfaceObj.blit(rightDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif sides[0] and not sides[1] and not sides[2] and not sides[3]:
+                windowSurfaceObj.blit(rightImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif not sides[0] and sides[1] and sides[2] and sides[3]:
+                windowSurfaceObj.blit(upLeftDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif not sides[0] and sides[1] and sides[2] and not sides[3]:
+                windowSurfaceObj.blit(upLeftImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif not sides[0] and sides[1] and not sides[2] and sides[3]:
+                windowSurfaceObj.blit(upDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif not sides[0] and sides[1] and not sides[2] and not sides[3]:
+                windowSurfaceObj.blit(upImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif not sides[0] and not sides[1] and sides[2] and sides[3]:
+                windowSurfaceObj.blit(leftDownImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif not sides[0] and not sides[1] and sides[2] and not sides[3]:
+                windowSurfaceObj.blit(leftImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            elif not sides[0] and not sides[1] and not sides[2] and sides[3]:
+                windowSurfaceObj.blit(downImg, (m.pixels.index(row)*20, row.index(pixel)*20))
+            else: # all sides are false
+                print "There was an error somewhere."
 
 
     pygame.display.update()
